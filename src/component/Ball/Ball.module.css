@@ -1,0 +1,8 @@
+.ball {
+    position: absolute;
+    background-color: white;
+    height: var(--ball-size);
+    width: var(--ball-size);
+    border-radius: 100px;
+    transform: translate(-50%, -50%);
+}
