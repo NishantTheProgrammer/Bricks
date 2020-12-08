@@ -1,3 +1,3 @@
 # Bricks with REACT
 
-It will be published soon on bricks.nishanttheprogrammer.com
+Live on [bricks.nishanttheprogrammer.com](bricks.nishanttheprogrammer.com)
