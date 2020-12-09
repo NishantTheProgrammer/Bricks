@@ -1,0 +1,9 @@
+.bricks {
+    background-color: orange;
+    display: grid;
+   
+    grid-template-columns: repeat(10, var(--brick-size));
+    grid-template-rows: repeat(4, var(--brick-size));
+    justify-content: space-evenly;
+    grid-gap: 2em;
+}

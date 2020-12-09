@@ -1,0 +1,11 @@
+.normal {
+    background-color: orchid;
+    border-radius: var(--brick-size);
+}
+
+.bomb {
+    background-color: black;
+    border-radius: 2em;
+    color: white;
+
+}

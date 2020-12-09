@@ -22,4 +22,5 @@ body {
 :root {
     --bat-width: 20em;
     --ball-size: 5em;
+    --brick-size: 7vw;
 }
