@@ -1,25 +1,38 @@
-import ReactDOM from "react-dom"
+import React, { Component } from "react";
 import classes from './Brick.module.css'
 
-const Brick = props => {
+class Brick extends Component {
+   constructor(props){
+       super(props)
+       this.webRef= React.createRef();
+        
+    }
 
-    console.log(ReactDOM.findDOMNode(this))
-    return (
-        <div
-             ref={el => {
-            // el can be null - see https://reactjs.org/docs/refs-and-the-dom.html#caveats-with-callback-refs
-                if (!el) return;
-    
-                console.log(el.getBoundingClientRect()); // prints 200px
-            }}
-    
+
+    componentDidMount() {
+        let {x, y, width, height} = this.webRef.current.getBoundingClientRect();
+
+        this.props.getBricks(x, y, width, height);
+
+        // console.log(x);
+    }
+
+    render() {
+
+        return (
+            <div
+                 ref={this.webRef}
         
-        
-        style={{gridArea: props.template}}
-            className={classes.[props.data.type]}
-            onClick={props.remove}
-        >{props.template}</div>
-    );
+            
+            
+            style={{gridArea: this.props.template}}
+                className={classes.[this.props.data.type]}
+                onClick={this.props.remove}
+            >{this.props.template}</div>
+        );
+    }
+    
+
 };
 
 export default Brick;

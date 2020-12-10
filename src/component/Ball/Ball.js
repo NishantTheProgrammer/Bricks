@@ -30,6 +30,8 @@ class Ball extends Component {
                 x: prev.x + (Math.cos(updatedAnlge * (Math.PI / 180)) * N)
             }
         })
+        
+        this.props.setBallPos({x: this.state.x, y: this.state.y})
     }
 
     componentDidMount() {
@@ -43,6 +45,7 @@ class Ball extends Component {
     componentWillUnmount() {
         clearInterval(this.state.interval);
     }
+
 
     render() {
         return (

@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import Brick from './Brick/Brick'
 import classes from './Bricks.module.css'
+import CollusionDetector from './CollusionDetector';
 
 class Bricks extends Component {
 
@@ -29,12 +30,52 @@ class Bricks extends Component {
 
     }
 
-    removeBrickHandler = (index, item) => {
-        let template = [...this.state.template]
-        template[item[1]][item[2]] = '.';
-
+    removeBrickHandler = (index) => {
+        let item = [].concat(...this.state.template)[index];
         
-        this.setState({template})
+        let row = item[1];
+        let col = item[2];
+        
+        
+        let template = [...this.state.template]
+        // console.log(`template: ${template[row][col]} row: ${row} col: ${col}`);
+
+        let old = template[row][col];
+        
+        // console.log(template);
+        
+        if(old !== '.') {
+            template[row][col] = '.';
+            this.setState({template})
+        }
+        
+    }
+    getBricks = (x, y, width, height, index) => {
+
+        let bricksData = [...this.state.bricksData];
+
+        bricksData[index].x = x;
+        bricksData[index].y = y;
+        bricksData[index].width = width;
+        bricksData[index].height = height;
+
+        this.setState({bricksData});
+
+        // this.setState(prev => ({
+        //     brickCordinates: [
+        //         ...prev.brickCordinates, {
+        //             x: x + (width / 2),
+        //             y: y + (height / 2),
+        //         }
+        //     ]
+        // }))
+    }
+
+    componentDidUpdate() {
+       CollusionDetector(this.state.bricksData, this.props.ballPos, item => {
+           this.removeBrickHandler(item);
+       });
+
     }
 
 
@@ -46,11 +87,13 @@ class Bricks extends Component {
         return (
             <div className={classes.bricks} style={{gridTemplateAreas}}> 
                 {
-                    this.state.bricksData.map((data, index) => template[index] != '.' ? <Brick
+                    this.state.bricksData.map((data, index) => template[index] !== '.' ? <Brick
+                        getBricks={(x, y, width, height) => this.getBricks(x, y, width, height, index)}
                         key={index} 
+                        
                         data={data} 
                         template={template[index]}
-                        remove={() => this.removeBrickHandler(index, template[index])}
+                        remove={() => this.removeBrickHandler(index)}
                     /> : null)
                 }
                 
