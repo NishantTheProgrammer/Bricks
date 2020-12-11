@@ -29,7 +29,7 @@ class Bat extends Component {
         }
 
         if(ballData.y - (ballData.width / 2) > window.innerHeight ) {
-            console.log('YOu loss');
+            alert('YOu loss');
         }
         
 

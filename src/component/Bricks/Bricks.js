@@ -11,7 +11,7 @@ class Bricks extends Component {
     }
 
     componentDidMount() {
-        let brickTypes = ['normal', 'bomb']; //Magical brick uska bhi types or
+        let brickTypes = ['normal', 'bomb', 'row', 'plus', 'random']; //Magical brick uska bhi types or
         let bricksData = []
         let template = []
         for(let i = 0; i < 40; i++) {
@@ -29,16 +29,34 @@ class Bricks extends Component {
 
     }
 
-    removeBrickHandler = (index) => {
+    removeBrickHandler = (index, type) => {
+        new Audio(`./sounds/${type}.mp3`).play();
         let row = index.toString()[0];
         let col = index.toString()[1];
         if(col === undefined) { // if index isn't two digit number
-        col = row;
-        row = 0;
-    }
-    let template = [...this.state.template];
+            col = row;
+            row = 0;
+        }
+        let template = [...this.state.template];
+        
         if(template[row][col] !== '.') {
-            template[row][col] = '.'    // because this in direcly mutating state due to it's copying 2d array which is pointing to state        
+            if(type == 'normal') {
+                template[row][col] = '.'
+            }
+            else if(type === 'bomb') {
+                template[row][col] = '.' 
+            }
+            else if(type === 'row') {
+                for(let i = 0; i < template[0].length; i++) {
+                    template[row][i] = '.' 
+                }
+            }
+            else if(type === 'plus') {
+                template[row][col] = '.'
+            }
+            else if(type === 'random') {
+                template[row][col] = '.'
+            }
             return true
         }
         else return false;
@@ -56,7 +74,7 @@ class Bricks extends Component {
 
     componentDidUpdate() {
        CollusionDetector(this.state.bricksData, this.props.ballPos, index => {
-            if(this.removeBrickHandler(index)) {
+            if(this.removeBrickHandler(index, this.state.bricksData[index].type)) {
                 this.props.collusion();
             }
        });

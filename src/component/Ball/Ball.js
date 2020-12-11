@@ -4,7 +4,7 @@ import classes from './Ball.module.css';
 
 
 const N = 5  // how much it will go up on each 2s
-const FPS = 40
+const FPS = 60
 let ballWidth = getComputedStyle(document.body).getPropertyValue('--ball-size');            
 ballWidth = +ballWidth.slice(0, ballWidth.length - 2);
 
@@ -12,25 +12,28 @@ class Ball extends Component {
     state = {
         x: 300,
         y: 300,
-        running: false,
+        running: true,
         angle: 250,
         interval: null
     }
 
     updatePosition = () => {
-        this.setState(prev => {
-            let updatedAnlge = prev.angle;
-            if((prev.x < 0 + (ballWidth * 10 / 2)) || prev.x > window.innerWidth - (ballWidth * 10 / 2)) {
-                updatedAnlge = 180 - prev.angle; // if ball going outside the screen change angle into mirror angle
-            }
-            return {
-                angle: updatedAnlge,
-                y: prev.y - (Math.sin(updatedAnlge * (Math.PI / 180)) * N),
-                x: prev.x + (Math.cos(updatedAnlge * (Math.PI / 180)) * N)
-            }
-        })
-        
-        this.props.setBallPos({x: this.state.x, y: this.state.y, width: ballWidth * 10})
+        if(this.state.running) {
+
+            this.setState(prev => {
+                let updatedAnlge = prev.angle;
+                if((prev.x < 0 + (ballWidth * 10 / 2)) || prev.x > window.innerWidth - (ballWidth * 10 / 2)) {
+                    updatedAnlge = 180 - prev.angle; // if ball going outside the screen change angle into mirror angle
+                }
+                return {
+                    angle: updatedAnlge,
+                    y: prev.y - (Math.sin(updatedAnlge * (Math.PI / 180)) * N),
+                    x: prev.x + (Math.cos(updatedAnlge * (Math.PI / 180)) * N)
+                }
+            })
+            
+            this.props.setBallPos({x: this.state.x, y: this.state.y, width: ballWidth * 10})
+        }
     }
 
     componentDidMount() {
@@ -59,8 +62,7 @@ class Ball extends Component {
     throwBallBack = diffrence => {
 
         this.setState(prev => {
-            console.log('throwing', diffrence);
-            let updatedAnlge = 360 - prev.angle - (diffrence / 2) % 360;
+            let updatedAnlge = 360 - prev.angle - (diffrence / 2) % 360;  // difference is for adjuct reaction of slope
             return {
                 angle: updatedAnlge,
                 y: prev.y - (Math.sin(updatedAnlge * (Math.PI / 180)) * N),

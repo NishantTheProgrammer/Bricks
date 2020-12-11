@@ -4,8 +4,95 @@
 }
 
 .bomb {
-    background-color: black;
-    border-radius: 2em;
-    color: white;
+    background-color: rgb(10, 20, 37);
+    border-radius: var(--brick-size);
+    position:relative;
 
+    box-shadow: inset 7px -2px 4px 1px #888888;
+
+}
+.bomb::before {
+    content: '';
+    background-color: yellow;
+    height: 28px;
+    width: 5px;
+    position: absolute;
+    border-radius: 54%;
+    right: 1em;
+    transform: rotate(42deg);
+}
+.bomb::after {
+    content: '';
+    background-color: rgb(255, 54, 0);
+    height: 10px;
+    width: 10px;
+    position: absolute;
+    border-radius: 50px;
+    right: 0;
+    transform: rotate(42deg);
+}
+
+.row {
+    background-color: orange;
+    border-radius: var(--brick-size);
+    position:relative;
+
+    box-shadow: inset 7px -2px 4px 1px #888888;
+}
+.row::before {
+    content: '';
+    background-color: white;
+    height: 28px;
+    width: 5px;
+    position: absolute;
+    border-radius: 54%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+
+.plus {
+    background-color: green;
+    border-radius: var(--brick-size);
+    position:relative;
+}
+.plus::before {
+    content: '';
+    background-color: black;
+    height: 28px;
+    width: 5px;
+    position: absolute;
+    border-radius: 54%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+.plus::after {
+    content: '';
+    background-color: black;
+    height: 28px;
+    width: 5px;
+    position: absolute;
+    border-radius: 54%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.random {
+    background-color: black;
+    position:relative;
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+}
+.random::before {
+    content: '';
+    background-color: white;
+    height: 40%;
+    width: 40%;
+    position: absolute;
+    border-radius: var(--brick-size);
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -50%);
 }
