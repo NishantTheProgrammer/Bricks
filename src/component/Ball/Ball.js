@@ -4,7 +4,7 @@ import classes from './Ball.module.css';
 
 
 const N = 5  // how much it will go up on each 2s
-const FPS = 30
+const FPS = 60
 let ballWidth = getComputedStyle(document.body).getPropertyValue('--ball-size');            
 ballWidth = +ballWidth.slice(0, ballWidth.length - 2);
 
@@ -31,14 +31,13 @@ class Ball extends Component {
             }
         })
         
-        this.props.setBallPos({x: this.state.x, y: this.state.y})
+        this.props.setBallPos({x: this.state.x, y: this.state.y, width: ballWidth * 10})
     }
 
     componentDidMount() {
         let interval = setInterval(() => {
             this.updatePosition();
-        }, FPS);
-
+        }, 1000 / FPS);
         this.setState({interval});
     }
 
@@ -49,7 +48,12 @@ class Ball extends Component {
 
     render() {
         return (
-            <div className={classes.ball} onClick={() => this.setState({angle: 45})} style={{left: `${this.state.x}px`, top: `${this.state.y}px`}}></div>
+            <div 
+                className={classes.ball} 
+                style={{
+                    left: `${this.state.x}px`, 
+                    top: `${this.state.y}px`
+                }}></div>
         )
     }
 }

@@ -15,8 +15,7 @@ class Bricks extends Component {
         let bricksData = []
         let template = []
         for(let i = 0; i < 40; i++) {
-            bricksData.push({type: brickTypes[Math.floor(Math.random() * brickTypes.length)]});
-            
+            bricksData.push({type: brickTypes[Math.floor(Math.random() * brickTypes.length)]});  
         }
         for(let i = 0; i < 4; i++) {
             let tempArray = []
@@ -31,44 +30,31 @@ class Bricks extends Component {
     }
 
     removeBrickHandler = (index) => {
-        let item = [].concat(...this.state.template)[index];
-        
-        let row = item[1];
-        let col = item[2];
-        
-        
-        let template = [...this.state.template]
-        // console.log(`template: ${template[row][col]} row: ${row} col: ${col}`);
+        let row = index.toString()[0];
+        let col = index.toString()[1];
 
-        let old = template[row][col];
-        
-        // console.log(template);
-        
-        if(old !== '.') {
-            template[row][col] = '.';
-            this.setState({template})
+        if(col === undefined) { // if index isn't two digit number
+            col = row;
+            row = 0;
         }
+
+
+        let template = [...this.state.template];
+        template[row][col] = '.'    // because this in direcly mutating state due to it's copying 2d array which is pointing to state
+
+
+
         
     }
     getBricks = (x, y, width, height, index) => {
-
         let bricksData = [...this.state.bricksData];
 
-        bricksData[index].x = x;
-        bricksData[index].y = y;
+        bricksData[index].x = x + (width / 2);
+        bricksData[index].y = y + (height / 2);
         bricksData[index].width = width;
         bricksData[index].height = height;
 
         this.setState({bricksData});
-
-        // this.setState(prev => ({
-        //     brickCordinates: [
-        //         ...prev.brickCordinates, {
-        //             x: x + (width / 2),
-        //             y: y + (height / 2),
-        //         }
-        //     ]
-        // }))
     }
 
     componentDidUpdate() {
@@ -93,7 +79,6 @@ class Bricks extends Component {
                         
                         data={data} 
                         template={template[index]}
-                        remove={() => this.removeBrickHandler(index)}
                     /> : null)
                 }
                 

@@ -5,22 +5,13 @@ import Bricks from './component/Bricks/Bricks';
 import { Component } from 'react';
 
 class App extends Component {
-
-
   state = {
     ballPos: {x: 300, y: window.innerHeight}
-  }
-
-
-
-  componentDidMount() {
-    console.log(this.state.ballPos);
   }
 
   setBallPos = ballPos => this.setState({ballPos});
 
   render() {
-
     return (
       <div className="app">
         <Bat />
