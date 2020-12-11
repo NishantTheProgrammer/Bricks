@@ -7,7 +7,7 @@ import { Component, createRef } from 'react';
 class App extends Component {
   constructor(props){
     super(props)
-    this.ballColusionRef = createRef()
+    this.ballRef = createRef()
   }
   state = {
     ballPos: {x: 300, y: window.innerHeight}
@@ -16,15 +16,18 @@ class App extends Component {
   setBallPos = ballPos => this.setState({ballPos});
 
   collusionHandler = () => {
-    this.ballColusionRef.current.collusionAngleUpdate()
+    this.ballRef.current.collusionAngleUpdate()
   }
 
+  throwBallBackHandler = diffrence => {
+    this.ballRef.current.throwBallBack(diffrence)
+  }
 
   render() {
     return (
       <div className="app">
-        <Bat />
-        <Ball setBallPos={this.setBallPos} ref={this.ballColusionRef} />
+        <Bat ballPos={this.state.ballPos} onBallHit={this.throwBallBackHandler}/>
+        <Ball setBallPos={this.setBallPos} ref={this.ballRef} />
         <Bricks ballPos={this.state.ballPos}  collusion={this.collusionHandler}/>
       </div>
     );

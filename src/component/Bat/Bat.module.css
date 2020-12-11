@@ -1,10 +1,9 @@
 .bat {
-    height: 2em;
+    height: var(--bat-height);
     width: var(--bat-width);
     background-color: tomato;
     position: absolute;
     bottom: 0;
-    left: 100%;
     transition: left .1s;
     border-top-left-radius: 50%;
     border-top-right-radius: 50%;

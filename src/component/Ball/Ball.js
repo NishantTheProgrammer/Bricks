@@ -4,20 +4,19 @@ import classes from './Ball.module.css';
 
 
 const N = 5  // how much it will go up on each 2s
-const FPS = 60
+const FPS = 40
 let ballWidth = getComputedStyle(document.body).getPropertyValue('--ball-size');            
 ballWidth = +ballWidth.slice(0, ballWidth.length - 2);
 
 class Ball extends Component {
     state = {
         x: 300,
-        y: window.innerHeight,
+        y: 300,
         running: false,
-        angle: 56,
+        angle: 250,
         interval: null
     }
 
-    // root(sqr(Y) - sqr(N) )
     updatePosition = () => {
         this.setState(prev => {
             let updatedAnlge = prev.angle;
@@ -46,18 +45,28 @@ class Ball extends Component {
     }
 
     collusionAngleUpdate = () => {
-        console.log('collusionAngleUpdate');
-
         this.setState(prev => {
-            let updatedAnlge = 90 - prev.angle;
+            let updatedAnlge = 180 + prev.angle;
             return {
                 angle: updatedAnlge,
                 y: prev.y - (Math.sin(updatedAnlge * (Math.PI / 180)) * N),
                 x: prev.x + (Math.cos(updatedAnlge * (Math.PI / 180)) * N)
             }
         })
-        
         this.props.setBallPos({x: this.state.x, y: this.state.y, width: ballWidth * 10})
+    }
+
+    throwBallBack = diffrence => {
+
+        this.setState(prev => {
+            console.log('throwing', diffrence);
+            let updatedAnlge = 360 - prev.angle - (diffrence / 2) % 360;
+            return {
+                angle: updatedAnlge,
+                y: prev.y - (Math.sin(updatedAnlge * (Math.PI / 180)) * N),
+                x: prev.x + (Math.cos(updatedAnlge * (Math.PI / 180)) * N)
+            }
+        })
     }
 
     render() {
