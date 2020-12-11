@@ -32,19 +32,16 @@ class Bricks extends Component {
     removeBrickHandler = (index) => {
         let row = index.toString()[0];
         let col = index.toString()[1];
-
         if(col === undefined) { // if index isn't two digit number
-            col = row;
-            row = 0;
+        col = row;
+        row = 0;
+    }
+    let template = [...this.state.template];
+        if(template[row][col] !== '.') {
+            template[row][col] = '.'    // because this in direcly mutating state due to it's copying 2d array which is pointing to state        
+            return true
         }
-
-
-        let template = [...this.state.template];
-        template[row][col] = '.'    // because this in direcly mutating state due to it's copying 2d array which is pointing to state
-
-
-
-        
+        else return false;
     }
     getBricks = (x, y, width, height, index) => {
         let bricksData = [...this.state.bricksData];
@@ -58,8 +55,10 @@ class Bricks extends Component {
     }
 
     componentDidUpdate() {
-       CollusionDetector(this.state.bricksData, this.props.ballPos, item => {
-           this.removeBrickHandler(item);
+       CollusionDetector(this.state.bricksData, this.props.ballPos, index => {
+            if(this.removeBrickHandler(index)) {
+                this.props.collusion();
+            }
        });
 
     }

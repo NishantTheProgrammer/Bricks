@@ -13,7 +13,7 @@ class Ball extends Component {
         x: 300,
         y: window.innerHeight,
         running: false,
-        angle: 165,
+        angle: 56,
         interval: null
     }
 
@@ -45,6 +45,20 @@ class Ball extends Component {
         clearInterval(this.state.interval);
     }
 
+    collusionAngleUpdate = () => {
+        console.log('collusionAngleUpdate');
+
+        this.setState(prev => {
+            let updatedAnlge = 90 - prev.angle;
+            return {
+                angle: updatedAnlge,
+                y: prev.y - (Math.sin(updatedAnlge * (Math.PI / 180)) * N),
+                x: prev.x + (Math.cos(updatedAnlge * (Math.PI / 180)) * N)
+            }
+        })
+        
+        this.props.setBallPos({x: this.state.x, y: this.state.y, width: ballWidth * 10})
+    }
 
     render() {
         return (
