@@ -11,11 +11,18 @@ class Bricks extends Component {
     }
 
     componentDidMount() {
-        let brickTypes = ['normal', 'bomb', 'row', 'plus', 'random']; //Magical brick uska bhi types or
         let bricksData = []
         let template = []
         for(let i = 0; i < 40; i++) {
-            bricksData.push({type: brickTypes[Math.floor(Math.random() * brickTypes.length)]});  
+            let randomValue = Math.floor(Math.random() * 100);
+            let type = null;
+            if(randomValue < 80) { type = 'normal'; }
+            else if( randomValue < 85) {type = 'bomb'}
+            else if( randomValue < 90) {type = 'row'}
+            else if( randomValue < 95) {type = 'plus'}
+            else {type = 'random'}
+
+            bricksData.push({type});  
         }
         for(let i = 0; i < 4; i++) {
             let tempArray = []
@@ -30,7 +37,7 @@ class Bricks extends Component {
     }
 
     removeBrickHandler = (index, type) => {
-        new Audio(`./sounds/${type}.mp3`).play();
+        let sound = new Audio(`./sounds/${type}.mp3`);
         let row = index.toString()[0];
         let col = index.toString()[1];
         if(col === undefined) { // if index isn't two digit number
@@ -40,11 +47,21 @@ class Bricks extends Component {
         let template = [...this.state.template];
         
         if(template[row][col] !== '.') {
-            if(type == 'normal') {
+            if(type === 'normal') {
                 template[row][col] = '.'
             }
             else if(type === 'bomb') {
                 template[row][col] = '.' 
+
+                let colUpperLimit = template[0].length;
+                let rowUpperLimit = template.length;               
+                for(let r = Number(row) - 1; r <= Number(row) + 1; r++) {  // run 3 * 3 times
+                    for(let c = Number(col) -1; c <= Number(col) + 1; c++) { // c++ ko salam, run 3 times
+                        if((r < rowUpperLimit && c < colUpperLimit) && (r >= 0 && c >= 0)) {
+                            template[r][c] = '.';
+                        }
+                    }
+                }
             }
             else if(type === 'row') {
                 for(let i = 0; i < template[0].length; i++) {
@@ -52,11 +69,27 @@ class Bricks extends Component {
                 }
             }
             else if(type === 'plus') {
-                template[row][col] = '.'
+                for(let i = 0; i < template[0].length; i++) {   //to remove horizontal element of plus
+                    template[row][i] = '.' 
+                }
+                for(let i = 0; i < template.length; i++) {      // to remove vertical element of plus (template.lenght == 4)
+                    template[i][col] = '.' 
+                }
+
             }
             else if(type === 'random') {
-                template[row][col] = '.'
+                let rationOfVanishableElements = 10;            // it should remove 10% of the template
+
+                for(let i = 0; i < template[0].length; i++) {   //to remove horizontal element of plus
+                    for(let j = 0; j < template.length; j++) {      // to remove vertical element of plus (template.lenght == 4)
+                        if(Math.floor(Math.random() * 100) < rationOfVanishableElements) {
+                            template[j][i] = '.';
+                        }
+                    } 
+                }
+                template[row][col] = '.';
             }
+            sound.play();
             return true
         }
         else return false;

@@ -5,12 +5,11 @@ import Bricks from './component/Bricks/Bricks';
 import { Component, createRef } from 'react';
 
 class App extends Component {
-  constructor(props){
-    super(props)
-    this.ballRef = createRef()
-  }
+  ballRef = createRef()
+
   state = {
-    ballPos: {x: 300, y: window.innerHeight}
+    ballPos: {x: 300, y: window.innerHeight},
+    isGameRunning: false
   }
 
   setBallPos = ballPos => this.setState({ballPos});
@@ -23,11 +22,20 @@ class App extends Component {
     this.ballRef.current.throwBallBack(diffrence)
   }
 
+  componentDidMount() {
+      window.addEventListener("resize", event => { 
+        alert('Sorry currently we don\'t support resizing');
+        window.location.reload();
+      });
+  }
+
+  startGameHandler = () => { this.state.isGameRunning || this.setState({isGameRunning: true}) }
+
   render() {
     return (
       <div className="app">
-        <Bat ballPos={this.state.ballPos} onBallHit={this.throwBallBackHandler}/>
-        <Ball setBallPos={this.setBallPos} ref={this.ballRef} />
+        <Bat ballPos={this.state.ballPos} onStartGame={this.startGameHandler} onBallHit={this.throwBallBackHandler}/>
+        <Ball setBallPos={this.setBallPos} isGameRunning={this.state.isGameRunning} ref={this.ballRef} />
         <Bricks ballPos={this.state.ballPos}  collusion={this.collusionHandler}/>
       </div>
     );

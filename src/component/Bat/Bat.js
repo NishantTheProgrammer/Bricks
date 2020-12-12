@@ -24,7 +24,11 @@ class Bat extends Component {
         if(ballData.y + (ballData.width / 2) > batData.y){ // ballWidth == ballHeight
 
             if(Math.abs(ballData.x - batCenter) < batData.width / 2) {
+
+                let sound = new Audio(`./sounds/ballBat.mp3`);
+                sound.volume= 0.5;
                 this.props.onBallHit(ballData.x - batCenter);
+                sound.play();
             }
         }
 
@@ -41,11 +45,13 @@ class Bat extends Component {
     }
 
     componentDidMount() {
-        document.addEventListener("keydown", event => {    
+        document.addEventListener("keydown", event => { 
             if(event.key === 'ArrowLeft' && this.state.position > 0 ){
+                this.props.onStartGame();
                 this.setState(prev => ({position: prev.position - 50}));
             }
             else if(event.key === 'ArrowRight' && this.state.position + (batWidth * 10) < window.innerWidth) {
+                this.props.onStartGame();
                 this.setState(prev => ({position: prev.position + 50}));
             }
         });

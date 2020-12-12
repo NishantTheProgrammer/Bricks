@@ -12,7 +12,7 @@ class Ball extends Component {
     state = {
         x: 300,
         y: 300,
-        running: true,
+        running: false,
         angle: 250,
         interval: null
     }
@@ -38,10 +38,13 @@ class Ball extends Component {
 
     componentDidMount() {
         let interval = setInterval(() => {
+            this.setState({running: this.props.isGameRunning});
             this.updatePosition();
         }, 1000 / FPS);
         this.setState({interval});
     }
+    
+
 
     componentWillUnmount() {
         clearInterval(this.state.interval);

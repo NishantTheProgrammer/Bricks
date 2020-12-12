@@ -1,6 +1,7 @@
 .normal {
     background-color: orchid;
     border-radius: var(--brick-size);
+    box-shadow: inset 4px -2px 4px 1px #2421078f, inset -5px 5px 8px 0px #232061;
 }
 
 .bomb {
