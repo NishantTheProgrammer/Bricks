@@ -15,7 +15,7 @@ class Brick extends Component {
             <div
                 ref={this.webRef}
                 style={{gridArea: this.props.template}}
-                className={classes.[this.props.data.type]}
+                className={classes[this.props.data.type]}
             ></div>
         );
     }

@@ -13,7 +13,9 @@ class Bricks extends Component {
     componentDidMount() {
         let bricksData = []
         let template = []
-        for(let i = 0; i < 40; i++) {
+        let col = 10;
+        let row = 4;
+        for(let i = 0; i < col * row; i++) {
             let randomValue = Math.floor(Math.random() * 100);
             let type = null;
             if(randomValue < 80) { type = 'normal'; }
@@ -24,16 +26,14 @@ class Bricks extends Component {
 
             bricksData.push({type});  
         }
-        for(let i = 0; i < 4; i++) {
+        for(let i = 0; i < row; i++) {
             let tempArray = []
-            for(let j = 0; j < 10; j++) {
+            for(let j = 0; j < col; j++) {
                 tempArray.push(`a${i}${j}`)
             }
             template.push(tempArray);
         }
-
         this.setState({bricksData, template});
-
     }
 
     removeBrickHandler = (index, type) => {
@@ -45,7 +45,6 @@ class Bricks extends Component {
             row = 0;
         }
         let template = [...this.state.template];
-        
         if(template[row][col] !== '.') {
             if(type === 'normal') {
                 template[row][col] = '.'
@@ -75,7 +74,6 @@ class Bricks extends Component {
                 for(let i = 0; i < template.length; i++) {      // to remove vertical element of plus (template.lenght == 4)
                     template[i][col] = '.' 
                 }
-
             }
             else if(type === 'random') {
                 let rationOfVanishableElements = 10;            // it should remove 10% of the template
@@ -96,42 +94,42 @@ class Bricks extends Component {
     }
     getBricks = (x, y, width, height, index) => {
         let bricksData = [...this.state.bricksData];
-
         bricksData[index].x = x + (width / 2);
         bricksData[index].y = y + (height / 2);
         bricksData[index].width = width;
         bricksData[index].height = height;
-
         this.setState({bricksData});
     }
 
     componentDidUpdate() {
-       CollusionDetector(this.state.bricksData, this.props.ballPos, index => {
+        let template = [].concat(...this.state.template);
+        let remaining = this.state.bricksData.reduce((sum, _, index) => sum + (template[index] === '.' ? 0 : 1), 0);
+        
+        if(remaining === 0) {
+            window.location.reload();
+            alert('You WON, wanna play again?');
+        }
+        CollusionDetector(this.state.bricksData, this.props.ballPos, (index, angle) => {
             if(this.removeBrickHandler(index, this.state.bricksData[index].type)) {
-                this.props.collusion();
+                this.props.collusion(angle);
             }
-       });
+        });
 
     }
-
-
 
     render() {
         let template = [].concat(...this.state.template);
         let gridTemplateAreas = this.state.template.map(item => `'${item.join(' ')}'`).join(' ');
-
         return (
-            <div className={classes.bricks} style={{gridTemplateAreas}}> 
+            <div className={classes.bricks} style={{gridTemplateAreas, gridTemplateRows: `repeat(${this.state.template.length}, var(--brick-size))`}}> 
                 {
                     this.state.bricksData.map((data, index) => template[index] !== '.' ? <Brick
                         getBricks={(x, y, width, height) => this.getBricks(x, y, width, height, index)}
                         key={index} 
-                        
                         data={data} 
                         template={template[index]}
                     /> : null)
                 }
-                
             </div>
         );
     }

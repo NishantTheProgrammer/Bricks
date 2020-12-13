@@ -23,9 +23,9 @@ class App extends Component {
   }
 
   componentDidMount() {
-      window.addEventListener("resize", event => { 
-        alert('Sorry currently we don\'t support resizing');
+      window.addEventListener("resize", () => { 
         window.location.reload();
+        alert("Sorry currently we don't support resizing, Have to reload");
       });
   }
 
@@ -40,7 +40,6 @@ class App extends Component {
       </div>
     );
   }
-
 }
 
 export default App;

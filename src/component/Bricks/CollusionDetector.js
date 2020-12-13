@@ -1,7 +1,4 @@
-
-const collusion = (bricks, ball, removeFun) => {
-    
-
+const collusion = (bricks, ball, removeFun) => {    
     const getAbsoluteDistance = (brickPos, ballPos) => {
         let a = Math.abs(ballPos.y - brickPos.y);
         let b = Math.abs(ballPos.x - brickPos.x);
@@ -9,7 +6,6 @@ const collusion = (bricks, ball, removeFun) => {
         return c;
     }
     bricks.forEach((brick, index) => {
-
         if(getAbsoluteDistance(brick, ball) < (ball.width + brick.width) / 2) {
             return removeFun(index)
         }
